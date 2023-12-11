@@ -32,7 +32,11 @@ You need Docker installed and configured so your Docker images can access to the
 
 Make sure you have installed **Python 3.6 or newer**, check that is in the path, and is callable using `python3` in your terminal. One possible way to achieve so is by using [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/).
 
+Add a Personal access token (classic) to your GitHub Account with scope "repo".
+
 ## Dependencies
+
+_Maybe this is not needed? It's also not mentioned in https://carla.readthedocs.io/en/latest/build_docker_unreal/_
 
 As mentioned before, in order to use Unreal Engine inside Docker we use [ue4-docker](https://github.com/adamrehn/ue4-docker). You can install it using `pip3`.  
 Further information on installing ue4-docker on Linux can be found [here](https://adamrehn.com/docs/ue4-docker/configuration/configuring-linux).
@@ -52,14 +56,18 @@ ue4-docker setup
 Navigate to `carla/Util/Docker` and use the following commands, each one will take a long time.  
 First, let's create a Docker image containing a compiled version of Unreal Engine 4 version `24.3`. Change the version if needed.
 
+_The no-engine option was not available_
+
 ```
 ue4-docker build 4.24.3 --no-engine --no-minimal
 ```
 
 Next, this will build the image with all the necessary requisites to build Carla in a **Ubuntu 18.04**
 
+Insert your Personal access token from GitHub.
+
 ```
-docker build -t carla-prerequisites -f Prerequisites.Dockerfile .
+docker build --build-arg GITHUB_TOKEN=<GITHUB_ACCESS_TOKEN> -t carla-prerequisites -f Prerequisites.Dockerfile .
 ```
 
 Finally create the actual Carla image, it will search for `carla-prerequisites:latest`:
